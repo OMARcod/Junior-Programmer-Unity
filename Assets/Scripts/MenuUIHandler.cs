@@ -25,6 +25,10 @@ public class MenuUIHandler : MonoBehaviour
         ColorPicker.Init();
         //this will call the NewColorSelected function when the color picker have a color button clicked.
         ColorPicker.onColorChanged += NewColorSelected;
+
+
+        //This line will pre-select the saved color in the MainManager (if there is one) when the menu screen is launched.
+        ColorPicker.SelectColor(MainManager.Instance.TeamColor);
     }
 
     public void StartNew() //it will invoke when the start button is presed
@@ -35,10 +39,24 @@ public class MenuUIHandler : MonoBehaviour
     //The instruction calls the method to close an application: Application.Quit().
     public void Exit()
     {
+        MainManager.Instance.SaveColor();
+
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
         Application.Quit();
 #endif
     }
+
+    public void SaveColorClicked()
+    {
+        MainManager.Instance.SaveColor();
+    }
+
+    public void LoadColorClicked()
+    {
+        MainManager.Instance.LoadColor();
+        ColorPicker.SelectColor(MainManager.Instance.TeamColor);
+    }
+
 }

@@ -38,7 +38,11 @@ public class MainManager : MonoBehaviour //system to pass data between the scene
 
         Instance = this; // You can now call MainManager.Instance from any other script
         DontDestroyOnLoad(gameObject);
-        //This code enables you to access the MainManager object from any other script.  
+        //This code enables you to access the MainManager object from any other script.
+        //
+
+
+        LoadColor(); //so if there is file it will load the saved data from there
     }
 
 
@@ -60,5 +64,21 @@ public class MainManager : MonoBehaviour //system to pass data between the scene
 
         //Finally, you used the special method File.WriteAllText to write a string to a file: 
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+        //Application.persistentDataPath that will give you a folder where you can save data that will survive between
+        //application reinstall or update and append to it the filename savefile.json.
+    }
+
+    public void LoadColor()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            TeamColor = data.TeamColor;
+        }
     }
 }
